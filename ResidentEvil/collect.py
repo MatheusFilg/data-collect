@@ -23,6 +23,7 @@ def get_content(url):
     resp = requests.get(url, headers=headers)
     return resp
 
+
 def get_basic_infos(soup):
     div_page = soup.find("div", class_="td-page-content")
     paragrafo = div_page.find_all("p")[1]
@@ -36,6 +37,16 @@ def get_basic_infos(soup):
         data[chave] = valor.strip(" ")
 
     return data
+
+
+def get_aparicoes(soup):
+    lis = (soup.find("div", class_="td-page-content").
+       find("h4").
+       find_next().
+       find_all('li'))
+    
+    aparicoes = [i.text for i in lis ]
+    return aparicoes
 # %%
 url = "https://www.residentevildatabase.com/personagens/ada-wong/"
 resp = get_content(url)
@@ -46,3 +57,4 @@ else:
     soup = BeautifulSoup(resp.text)
     get_basic_infos(soup)
 # %%
+
